@@ -1,0 +1,52 @@
+//4:1 Demultiplexer
+//code
+module demux4to1 (
+    input wire d,          // Single data input
+    input wire [1:0] sel,  // 2-bit select line
+    output wire [3:0] y    // 4 outputs
+);
+
+assign y[0] = (sel == 2'b00) ? d : 1'b0;
+assign y[1] = (sel == 2'b01) ? d : 1'b0;
+assign y[2] = (sel == 2'b10) ? d : 1'b0;
+assign y[3] = (sel == 2'b11) ? d : 1'b0;
+
+endmodule
+
+//testbench
+`timescale 1ns/1ps
+
+module tb_demux4to1;
+
+reg d;
+reg [1:0] sel;
+wire [3:0] y;
+
+// Instantiate the 4:1 DEMUX
+demux4to1 uut (
+    .d(d),
+    .sel(sel),
+    .y(y)
+);
+
+initial begin
+    // Initialize data input
+    d = 1'b1;
+
+    // Test all select lines
+    sel = 2'b00; #10;
+    $display("sel=%b, y=%b", sel, y);
+
+    sel = 2'b01; #10;
+    $display("sel=%b, y=%b", sel, y);
+
+    sel = 2'b10; #10;
+    $display("sel=%b, y=%b", sel, y);
+
+    sel = 2'b11; #10;
+    $display("sel=%b, y=%b", sel, y);
+
+    $stop;
+end
+
+endmodule
